@@ -18,8 +18,8 @@ public class Account {
 	private String email;
 
 
-	@Column(nullable = false, length = 16)
-	private String password;
+	@Column(nullable = false)
+	private String encodedPassword;
 
 	@Column(nullable = false, updatable = false, length = 16)
 	private String nickname;// 닉네임 변경 불가
@@ -30,7 +30,7 @@ public class Account {
 	public Account(Long accountId, String email, String password, String nickname) {
 		this.accountId = accountId;
 		this.email = email;
-		this.password = password;
+		this.encodedPassword = password;
 		this.nickname = nickname;
 	}
 
