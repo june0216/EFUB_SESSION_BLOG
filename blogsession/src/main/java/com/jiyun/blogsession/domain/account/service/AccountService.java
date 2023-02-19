@@ -1,12 +1,14 @@
 package com.jiyun.blogsession.domain.account.service;
 
 import com.jiyun.blogsession.domain.account.domain.Account;
-import com.jiyun.blogsession.domain.account.dto.ProfileUpdateRequestDto;
+import com.jiyun.blogsession.domain.account.dto.AccountUpdateRequestDto;
 import com.jiyun.blogsession.domain.account.dto.SignUpRequestDto;
 import com.jiyun.blogsession.domain.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import javax.security.auth.login.AccountNotFoundException;
 import javax.transaction.Transactional;
 
 @Service//서비스 레이어, 내부에서 자바 로직을 처리함
@@ -15,18 +17,6 @@ public class AccountService {
 	private final AccountRepository accountRepository;
 	//private final BCryptPasswordEncoder passwordEncoder;
 
-	@Transactional //TODO:readOnly 적용
-	public Account findById(Long id) {
-		return accountRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException());
-	}
-
-	@Transactional//TODO:readOnly 적용
-	public boolean isExistedEmail(String email){
-		return accountRepository.existsByEmail(email);
-	}
-
-	@Transactional
 	public Long signUp(SignUpRequestDto requestDto){
 		if (isExistedEmail(requestDto.getEmail())){
 			throw new IllegalArgumentException();
@@ -35,11 +25,38 @@ public class AccountService {
 		return account.getAccountId();
 	}
 
-	@Transactional
-	public Long update(Long accountId, ProfileUpdateRequestDto requestDto){
-		Account account = findById(accountId);
-		account.updateAccount(requestDto.getBio());
+
+	public Long update(AccountUpdateRequestDto requestDto){
+		Account account = findById(requestDto.getAccountId());
+		account.updateAccount(requestDto.getBio(), requestDto.getNickname());
 		return account.getAccountId();
 	}
+
+
+	public void delete(Long accountId) {
+		Account account = findById(accountId);
+		accountRepository.delete(account);
+	}
+
+	@Transactional
+	public void withdraw(Long accountId) {
+		Account account = findById(accountId);
+		account.withdrawAccount();
+	}
+
+	@Transactional//TODO readOnly
+	public Account findById(Long id) {
+		return accountRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("해당 id 를 가진 Account 를 찾을 수 없습니다. id ="+id));
+	}
+
+	@Transactional//TODO:readOnly 적용
+	public boolean isExistedEmail(String email){
+		return accountRepository.existsByEmail(email);
+	}
+
+
+
+
 
 }
