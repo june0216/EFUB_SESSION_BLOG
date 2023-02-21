@@ -24,16 +24,16 @@ public class PostListResponseDto {
 		private String writerName;
 		private String title;
 		private String content;
-		private LocalDateTime createDate;
+		private LocalDateTime createdDate;
 		private LocalDateTime modifiedDate;
 
 		public SinglePost(Post post) {
-			this.postId = getPostId();
-			this.writerName = getWriterName();
-			this.title = getTitle();
-			this.content = getContent();
-			this.createDate = getCreateDate();
-			this.modifiedDate = getModifiedDate();
+			this.postId = post.getPostId();
+			this.writerName = post.getWriter().getNickname();
+			this.title = post.getTitle();
+			this.content = post.getContent();
+			this.createdDate = post.getCreatedDate();
+			this.modifiedDate = post.getModifiedDate();
 		}
 
 		public static SinglePost of(Post post) {

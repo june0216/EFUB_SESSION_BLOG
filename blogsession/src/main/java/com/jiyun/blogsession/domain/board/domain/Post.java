@@ -14,7 +14,6 @@ import java.util.List;
 
 @Entity//해당 클래스에 있는 내부변수에 모두 @Column을 내부적으로 포함 -> 옵셥없으면 생략 가능
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자의 접근 제어를 PROTECTED로 설정해놓게 되면 무분별한 객체 생성에 대해 한번 더 체크할 수 있는 수단
-@DynamicInsert//status 기본값 유지를 위해
 @Getter
 public class Post extends BaseTimeEntity {
 
@@ -33,13 +32,6 @@ public class Post extends BaseTimeEntity {
 	@JoinColumn(name = "account_id", updatable = false)
 	private Account writer;
 
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	// post에만 persist 하면 되고, post만 삭제하면 댓글도 다 삭제된다.
-	// 꼭 필요한가?
-	private List<Comment> commentList = new ArrayList<>();
-
-	//TODO: status
-
 
 	@Builder
 	public Post(String title, String content, Account writer) {
@@ -52,12 +44,6 @@ public class Post extends BaseTimeEntity {
 	{
 		this.title = title;
 		this.content = content;
-	}
-
-	// 연관관계 편의 메소드
-	public void addComment(Comment comment) {
-		commentList.add(comment);
-		comment.setPost(this);
 	}
 
 }

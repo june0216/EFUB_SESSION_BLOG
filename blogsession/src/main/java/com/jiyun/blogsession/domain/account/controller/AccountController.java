@@ -22,13 +22,11 @@ public class AccountController {
 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public ResponseEntity<AccountResponseDto> create(@RequestBody @Valid final SignUpRequestDto requestDto) {
+	public AccountResponseDto signUp(@RequestBody @Valid final SignUpRequestDto requestDto) {
 		Long id = accountService.signUp(requestDto);
 		Account findAccount = accountService.findById(id);
-		return ResponseEntity.ok()
-				.body(new AccountResponseDto(findAccount));
+		return new AccountResponseDto(findAccount);
 	}
-
 	@GetMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public AccountResponseDto getAccount(@PathVariable Long accountId)
@@ -48,18 +46,18 @@ public class AccountController {
 
 	@PatchMapping("/{accountId}/withdraw/")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void withdraw(@PathVariable long accountId)
+	public String withdraw(@PathVariable long accountId)
 	{
 		accountService.withdraw(accountId);
-
-
+		return "성공적으로 탈퇴가 완료되었습니다";
 	}
 
 	@DeleteMapping("/{accountId}/withdraw/")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void delete(@PathVariable long accountId)
+	public String delete(@PathVariable long accountId)
 	{
 		accountService.delete(accountId);
+		return "성공적으로 탈퇴가 완료되었습니다";
 
 	}
 
