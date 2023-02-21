@@ -8,17 +8,14 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountUpdateRequestDto {
-	@NotBlank(message = "회원 아이디는 필수로 입력해야 합니다.")
-	private Long accountId;
 	private String bio;
 	@NotBlank(message = "닉네임은 필수값입니다. ")
 	private String nickname;
 
 	@Builder
-	public AccountUpdateRequestDto(Long accountId, String bio, String nickname) {
-		this.accountId = accountId;
+	public AccountUpdateRequestDto(String bio, String nickname) {
 		this.bio = bio;
 		this.nickname = nickname;
 	}

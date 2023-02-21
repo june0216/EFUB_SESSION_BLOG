@@ -22,36 +22,42 @@ public class AccountController {
 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public ResponseEntity<AccountResponseDto> signUp(@RequestBody @Valid final SignUpRequestDto requestDto) {
+	public AccountResponseDto signUp(@RequestBody @Valid final SignUpRequestDto requestDto) {
 		Long id = accountService.signUp(requestDto);
 		Account findAccount = accountService.findById(id);
-		return ResponseEntity.ok()
-				.body(new AccountResponseDto(findAccount));
+		return new AccountResponseDto(findAccount);
 	}
-
-	@PatchMapping("/profile")
-	public ResponseEntity<AccountResponseDto> update(@RequestBody @Valid final AccountUpdateRequestDto requestDto) {
-		Long id = accountService.update(requestDto);
-		Account findAccount = accountService.findById(id);
-		return ResponseEntity.ok()
-				.body(new AccountResponseDto(findAccount));
-	}
-
-	@PatchMapping("/withdraw")
-	public ResponseEntity<String> withdraw(@RequestParam Long accountID)
+	@GetMapping("/{accountId}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public AccountResponseDto getAccount(@PathVariable Long accountId)
 	{
-		accountService.withdraw(accountID);
-		return ResponseEntity.ok()
-				.body("성공적으로 탈퇴가 완료되었습니다.");
+		Account findAccount = accountService.findById(accountId);
+		return new AccountResponseDto(findAccount);
+	}
+
+
+	@PatchMapping("/{accountId}/profile")
+	@ResponseStatus(value = HttpStatus.OK)
+	public AccountResponseDto update(@PathVariable final Long accountId, @RequestBody @Valid final AccountUpdateRequestDto requestDto) {
+		Long id = accountService.update(accountId,requestDto);
+		Account findAccount = accountService.findById(id);
+		return new AccountResponseDto(findAccount);
+	}
+
+	@PatchMapping("/{accountId}/withdraw/")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void withdraw(@PathVariable long accountId)
+	{
+		accountService.withdraw(accountId);
+
 
 	}
 
-	@DeleteMapping("/withdraw/{accountId}")
-	public ResponseEntity<String> delete(@PathVariable long accountId)
+	@DeleteMapping("/{accountId}/withdraw/")
+	@ResponseStatus(value = HttpStatus.OK)
+	public void delete(@PathVariable long accountId)
 	{
 		accountService.delete(accountId);
-		return ResponseEntity.ok()
-				.body("성공적으로 탈퇴가 완료되었습니다.");
 
 	}
 
