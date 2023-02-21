@@ -9,6 +9,7 @@ import com.jiyun.blogsession.domain.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,7 +44,7 @@ public class PostController {
 		return PostResponseDto.of(post);
 	}
 
-	@GetMapping("/{accountId}")//작성자 별 조회
+	@GetMapping("/accounts/{accountId}")//작성자 별 조회
 	@ResponseStatus(value = HttpStatus.OK)
 	public PostListResponseDto readBoardList(@PathVariable Long accountId) {
 		List<Post> postList = postService.findByWriter(accountId);
@@ -60,12 +61,11 @@ public class PostController {
 		return PostResponseDto.of(post);
 	}
 
-
-
 	@DeleteMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void delete(@PathVariable final Long boardId) {
-		postService.delete(boardId);
+	public String delete(@PathVariable final Long postId) {
+		postService.delete(postId);
+		return "성공적으로 삭제되었습니다.";
 	}
 
 }
