@@ -36,7 +36,7 @@ public class AccountController {
 	}
 
 
-	@PatchMapping("/{accountId}/profile")
+	@PatchMapping("/profile")
 	@ResponseStatus(value = HttpStatus.OK)
 	public AccountResponseDto update(@PathVariable final Long accountId, @RequestBody @Valid final AccountUpdateRequestDto requestDto) {
 		Long id = accountService.update(accountId,requestDto);
@@ -50,8 +50,6 @@ public class AccountController {
 	{
 		accountService.withdraw(accountId);
 		return "성공적으로 탈퇴가 완료되었습니다";
-
-
 	}
 
 	@DeleteMapping("/{accountId}/withdraw/")
