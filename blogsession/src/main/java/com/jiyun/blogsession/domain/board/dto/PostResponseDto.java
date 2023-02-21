@@ -13,7 +13,7 @@ public class PostResponseDto {
 	private String writerName;
 	private String title;
 	private String content;
-	private LocalDateTime createDate;
+	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
 //TODO: 좋아요, 댓글 추가
 
@@ -23,7 +23,7 @@ public class PostResponseDto {
 				.title(board.getTitle())
 				.content(board.getContent())
 				.writerName(board.getWriter().getNickname())
-				.createDate(board.getCreateDate())
+				.createdDate(board.getCreatedDate())
 				.modifiedDate(board.getModifiedDate())
 				.build();
 	}
