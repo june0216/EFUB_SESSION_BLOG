@@ -13,8 +13,6 @@ public class PostResponseDto {
 	private String writerName;
 	private String title;
 	private String content;
-	private Integer likeCount;
-	private Boolean isLiked;
 	private LocalDateTime createDate;
 	private LocalDateTime modifiedDate;
 //TODO: 좋아요, 댓글 추가

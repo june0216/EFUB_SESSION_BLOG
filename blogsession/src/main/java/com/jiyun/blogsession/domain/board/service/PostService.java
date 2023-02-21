@@ -22,7 +22,7 @@ public class PostService {
 
 	@Transactional(readOnly = true)
 	public List<Post> findAllDesc() {
-		return postRepository.findAllByOrderByIdDesc();
+		return postRepository.findAllByOrderByPostIdDesc();
 	}
 
 
@@ -37,7 +37,7 @@ public class PostService {
 	public Long create(PostRequestDto requestDto) {
 		Account account = accountService.findById(requestDto.getAccountId());
 		Post board = postRepository.save(requestDto.toEntity(account));
-		return board.getBoardId();
+		return board.getPostId();
 	}
 
 
@@ -52,8 +52,8 @@ public class PostService {
 	}
 
 	@Transactional(readOnly = true)
-	public Post findById(Long boardId) {
-		return postRepository.findById(boardId)
-				.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + boardId));
+	public Post findById(Long postId) {
+		return postRepository.findById(postId)
+				.orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + postId));
 	}
 }

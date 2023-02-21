@@ -33,13 +33,6 @@ public class Post extends BaseTimeEntity {
 	@JoinColumn(name = "account_id", updatable = false)
 	private Account writer;
 
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	// post에만 persist 하면 되고, post만 삭제하면 댓글도 다 삭제된다.
-	// 꼭 필요한가?
-	private List<Comment> commentList = new ArrayList<>();
-
-	//TODO: status
-
 
 	@Builder
 	public Post(String title, String content, Account writer) {
@@ -52,12 +45,6 @@ public class Post extends BaseTimeEntity {
 	{
 		this.title = title;
 		this.content = content;
-	}
-
-	// 연관관계 편의 메소드
-	public void addComment(Comment comment) {
-		commentList.add(comment);
-		comment.setPost(this);
 	}
 
 }

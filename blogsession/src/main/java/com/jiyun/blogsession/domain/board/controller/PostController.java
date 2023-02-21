@@ -36,7 +36,7 @@ public class PostController {
 		return PostListResponseDto.of(postList);
 	}
 
-	@GetMapping("/{accountId}")
+	@GetMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)// 글 1개 조회
 	public PostResponseDto readBoard(@PathVariable Long postId) {
 		Post post = postService.findById(postId);
@@ -57,14 +57,6 @@ public class PostController {
 	public PostResponseDto update(@PathVariable final Long postId, @RequestBody final PostRequestDto requestDto) {
 		postService.update(postId, requestDto);
 		Post post = postService.findById(postId);
-
-/*		Integer likeCount = postLikeService.countPostLike(post);
-		boolean isLiked = postLikeService.isExistsByWriterAndPost(account, post);
-
-		BoardResponseDto responseDto = BoardResponseDto.of(board);
-
-		BoardresponseDto.setLike(likeCount, isLiked);*/
-
 		return PostResponseDto.of(post);
 	}
 
