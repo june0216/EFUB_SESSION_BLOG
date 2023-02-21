@@ -26,8 +26,8 @@ public class AccountService {
 	}
 
 
-	public Long update(AccountUpdateRequestDto requestDto){
-		Account account = findById(requestDto.getAccountId());
+	public Long update(Long accountId, AccountUpdateRequestDto requestDto){
+		Account account = findById(accountId);
 		account.updateAccount(requestDto.getBio(), requestDto.getNickname());
 		return account.getAccountId();
 	}
