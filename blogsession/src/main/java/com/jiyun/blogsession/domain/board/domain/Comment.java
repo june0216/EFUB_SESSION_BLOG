@@ -35,7 +35,13 @@ public class Comment extends BaseTimeEntity {
 
 	// 연관관계 편의 메소드
 	protected void setPost(Post post) {
+		if(this.post != null)
+		{
+			this.post.getCommentList().remove(this);
+
+		}
 		this.post = post;
+		post.getCommentList().add(this);
 	}
 
 	@Builder
