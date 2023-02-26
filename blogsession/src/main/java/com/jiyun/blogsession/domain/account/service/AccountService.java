@@ -47,13 +47,13 @@ public class AccountService {
 		account.withdrawAccount();
 	}
 
-	@Transactional//TODO readOnly
+	@Transactional(readOnly = true)
 	public Account findById(Long id) {
 		return accountRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("해당 id 를 가진 Account 를 찾을 수 없습니다. id ="+id));
 	}
 
-	@Transactional//TODO:readOnly 적용
+	@Transactional(readOnly = true)
 	public boolean isExistedEmail(String email){
 		return accountRepository.existsByEmail(email);
 	}
