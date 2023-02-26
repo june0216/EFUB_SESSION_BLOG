@@ -1,4 +1,4 @@
-package com.jiyun.blogsession.domain.board.dto;
+package com.jiyun.blogsession.domain.board.dto.request;
 
 
 import com.jiyun.blogsession.domain.account.domain.Account;
