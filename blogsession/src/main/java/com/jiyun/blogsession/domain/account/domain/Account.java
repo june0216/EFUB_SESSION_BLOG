@@ -1,58 +1,65 @@
-package com.jiyun.blogsession.domain.account.domain;
+package com.jiyun.blogsession.domain.account.service;
 
-import com.jiyun.blogsession.global.entity.BaseTimeEntity;
-import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
+import com.jiyun.blogsession.domain.account.domain.Account;
+import com.jiyun.blogsession.domain.account.dto.AccountUpdateRequestDto;
+import com.jiyun.blogsession.domain.account.dto.SignUpRequestDto;
+import com.jiyun.blogsession.domain.account.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.*;
+import javax.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 
-import static com.jiyun.blogsession.domain.account.domain.AccountStatus.UNREGISTERED;
+import javax.persistence.EntityNotFoundException;
 
+@Slf4j
+@Service//서비스 레이어, 내부에서 자바 로직을 처리함
+@Transactional
+@RequiredArgsConstructor //final 키워드가 붙은 필드에 대해 생성자 자동 생성
+public class AccountService {
+	private final AccountRepository accountRepository;
+	//private final BCryptPasswordEncoder passwordEncoder;
 
-@Entity//해당 클래스에 있는 내부변수에 모두 @Column을 내부적으로 포함 -> 옵셥없으면 생략 가능
-@NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자의 접근 제어를 PROTECTED로 설정해놓게 되면 무분별한 객체 생성에 대해 한번 더 체크할 수 있는 수단
-@DynamicInsert//status 기본값 유지를 위해
-@Getter
-public class Account extends BaseTimeEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "account_id", updatable = false)
-	private Long accountId;
-
-	@Column(nullable = false, length = 60)//DB에 저장될 때 조건(물리적인 데이터베이스 컬럼의 특성을 나타냄), 유효성 체크를 해주지는 않음
-	private String email;
-
-
-	@Column(nullable = false)
-	private String encodedPassword;
-
-	@Column(nullable = false, updatable = false, length = 16)
-	private String nickname;// 닉네임 변경 불가
-
-	private String bio;//length 따로 지정하지 않으면 기본적으로 255이다.
-
-	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'REGISTERED'")
-	private AccountStatus status;
-
-	@Builder
-	public Account(Long accountId, String email, String password, String nickname, String bio) {
-		this.accountId = accountId;
-		this.email = email;
-		this.encodedPassword = password;
-		this.nickname = nickname;
-		this.bio = bio;
+	public Long signUp(SignUpRequestDto requestDto){
+		if (isExistedEmail(requestDto.getEmail())){
+			throw new IllegalArgumentException();
+		}
+		Account account = accountRepository.save(requestDto.toEntity());
+		return account.getAccountId();
 	}
 
-	public void updateAccount(String bio, String nickname){
-		this.bio = bio;
-		this.nickname = nickname;
+
+	public Long update(Long accountId, AccountUpdateRequestDto requestDto){
+		Account account = findById(accountId);
+		account.updateAccount(requestDto.getBio(), requestDto.getNickname());
+		return account.getAccountId();
 	}
 
-	public void withdrawAccount(){
-		this.status = UNREGISTERED;
+
+	public void delete(Long accountId) {
+		Account account = findById(accountId);
+		accountRepository.delete(account);
 	}
+
+	@Transactional
+	public void withdraw(Long accountId) {
+		Account account = findById(accountId);
+		account.withdrawAccount();
+	}
+
+	@Transactional(readOnly = true)
+	public Account findById(Long id) {
+		return accountRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("해당 id 를 가진 Account 를 찾을 수 없습니다. id ="+id));
+	}
+
+	@Transactional(readOnly = true)
+	public boolean isExistedEmail(String email){
+		return accountRepository.existsByEmail(email);
+	}
+
+
+
 
 
 }
