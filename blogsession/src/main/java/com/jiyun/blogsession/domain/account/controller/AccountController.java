@@ -44,7 +44,7 @@ public class AccountController {
 		return new AccountResponseDto(findAccount);
 	}
 
-	@PatchMapping("/{accountId}/withdraw/")
+	@PatchMapping("/{accountId}/withdraw")
 	@ResponseStatus(value = HttpStatus.OK)
 	public String withdraw(@PathVariable long accountId)
 	{
@@ -52,7 +52,7 @@ public class AccountController {
 		return "성공적으로 탈퇴가 완료되었습니다";
 	}
 
-	@DeleteMapping("/{accountId}/withdraw/")
+	@DeleteMapping("/{accountId}/withdraw")
 	@ResponseStatus(value = HttpStatus.OK)
 	public String delete(@PathVariable long accountId)
 	{
