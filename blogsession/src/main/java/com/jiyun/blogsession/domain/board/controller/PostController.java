@@ -2,14 +2,13 @@ package com.jiyun.blogsession.domain.board.controller;
 
 
 import com.jiyun.blogsession.domain.board.domain.Post;
-import com.jiyun.blogsession.domain.board.dto.PostListResponseDto;
-import com.jiyun.blogsession.domain.board.dto.PostRequestDto;
-import com.jiyun.blogsession.domain.board.dto.PostResponseDto;
+import com.jiyun.blogsession.domain.board.dto.response.PostListResponseDto;
+import com.jiyun.blogsession.domain.board.dto.request.PostRequestDto;
+import com.jiyun.blogsession.domain.board.dto.response.PostResponseDto;
 import com.jiyun.blogsession.domain.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,13 +41,6 @@ public class PostController {
 	public PostResponseDto readBoard(@PathVariable Long postId) {
 		Post post = postService.findById(postId);
 		return PostResponseDto.of(post);
-	}
-
-	@GetMapping("/accounts/{accountId}")//작성자 별 조회
-	@ResponseStatus(value = HttpStatus.OK)
-	public PostListResponseDto readBoardList(@PathVariable Long accountId) {
-		List<Post> postList = postService.findByWriter(accountId);
-		return PostListResponseDto.of(postList);
 	}
 
 

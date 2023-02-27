@@ -6,8 +6,10 @@ import com.jiyun.blogsession.domain.account.dto.SignUpRequestDto;
 import com.jiyun.blogsession.domain.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,7 +24,7 @@ public class AccountService {
 
 	public Long signUp(SignUpRequestDto requestDto){
 		if (isExistedEmail(requestDto.getEmail())){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("이미 존재하는 email입니다. " + requestDto.getEmail());
 		}
 		Account account = accountRepository.save(requestDto.toEntity());
 		return account.getAccountId();
@@ -52,6 +54,7 @@ public class AccountService {
 		return accountRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("해당 id 를 가진 Account 를 찾을 수 없습니다. id ="+id));
 	}
+
 
 	@Transactional(readOnly = true)
 	public boolean isExistedEmail(String email){
