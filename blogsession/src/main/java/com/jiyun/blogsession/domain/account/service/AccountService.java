@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.security.auth.login.AccountNotFoundException;
 import javax.transaction.Transactional;
 
 @Service//서비스 레이어, 내부에서 자바 로직을 처리함
@@ -19,7 +18,7 @@ public class AccountService {
 
 	public Long signUp(SignUpRequestDto requestDto){
 		if (isExistedEmail(requestDto.getEmail())){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("이미 존재하는 email입니다. " + requestDto.getEmail());
 		}
 		Account account = accountRepository.save(requestDto.toEntity());
 		return account.getAccountId();
