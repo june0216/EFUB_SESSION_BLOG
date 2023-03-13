@@ -5,6 +5,7 @@ import com.jiyun.blogsession.domain.account.dto.AccountUpdateRequestDto;
 import com.jiyun.blogsession.domain.account.dto.SignUpRequestDto;
 import com.jiyun.blogsession.domain.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
