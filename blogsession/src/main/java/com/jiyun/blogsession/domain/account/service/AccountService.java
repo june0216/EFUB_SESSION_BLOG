@@ -56,11 +56,19 @@ public class AccountService {
 				.orElseThrow(() -> new EntityNotFoundException("해당 id 를 가진 Account 를 찾을 수 없습니다. id ="+id));
 	}
 
+	@Transactional(readOnly = true)
+	public Account findByEmail(String email){
+		return accountRepository.findByEmail(email)
+				.orElseThrow(() -> new EntityNotFoundException("해당 email 를 가진 Account 를 찾을 수 없습니다. email ="+email));
+	}
+
 
 	@Transactional(readOnly = true)
 	public boolean isExistedEmail(String email){
 		return accountRepository.existsByEmail(email);
 	}
+
+
 
 
 
