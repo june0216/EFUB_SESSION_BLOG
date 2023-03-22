@@ -1,6 +1,8 @@
 package com.jiyun.blogsession.domain.board.controller;
 
 
+import com.jiyun.blogsession.domain.account.domain.Account;
+import com.jiyun.blogsession.domain.account.service.AccountService;
 import com.jiyun.blogsession.domain.board.domain.Post;
 import com.jiyun.blogsession.domain.board.dto.request.HeartRequestDto;
 import com.jiyun.blogsession.domain.board.dto.response.PostListResponseDto;
@@ -23,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
 	private final PostService postService;
+	private final AccountService accountService;
 	private final PostHeartService postHeartService;
 
 	@PostMapping
@@ -42,19 +45,27 @@ public class PostController {
 
 	@GetMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)// 글 1개 조회
-	public PostResponseDto readBoard(@PathVariable Long postId) {
+	public PostResponseDto readBoard(@PathVariable Long postId, @RequestParam final Long accountId) {
 		Post post = postService.findById(postId);
-		return PostResponseDto.of(post);
+		Account account = accountService.findById(accountId);
+		Integer heartCount = postHeartService.countPostHeart(post);
+		boolean isHeart = postHeartService.isExistsByWriterAndPost(account, post);
+		PostResponseDto responseDto = PostResponseDto.of(post);
+		responseDto.uploadHeart(heartCount, isHeart);
+		return responseDto;
 	}
-
-
 
 	@PutMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public PostResponseDto update(@PathVariable final Long postId, @RequestBody final PostRequestDto requestDto) {
 		postService.update(postId, requestDto);
 		Post post = postService.findById(postId);
-		return PostResponseDto.of(post);
+		Account account = accountService.findById(requestDto.getAccountId());
+		Integer heartCount = postHeartService.countPostHeart(post);
+		boolean isHeart = postHeartService.isExistsByWriterAndPost(account, post);
+		PostResponseDto responseDto = PostResponseDto.of(post);
+		responseDto.uploadHeart(heartCount, isHeart);
+		return responseDto;
 	}
 
 	@DeleteMapping("/{postId}")

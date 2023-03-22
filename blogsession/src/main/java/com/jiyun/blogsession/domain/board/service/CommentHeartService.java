@@ -56,7 +56,7 @@ public class CommentHeartService {
 
 
 	@Transactional(readOnly = true)
-	public Integer countPostHeart(Comment comment) {
+	public Integer countCommentHeart(Comment comment) {
 		Integer count = commentHeartRepository.countByComment(comment);
 		return count;
 	}

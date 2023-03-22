@@ -1,5 +1,7 @@
 package com.jiyun.blogsession.domain.board.controller;
 
+import com.jiyun.blogsession.domain.account.domain.Account;
+import com.jiyun.blogsession.domain.account.service.AccountService;
 import com.jiyun.blogsession.domain.board.domain.Comment;
 import com.jiyun.blogsession.domain.board.domain.CommentHeart;
 import com.jiyun.blogsession.domain.board.dto.request.CommentRequestDto;
@@ -23,14 +25,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 	private final CommentService commentService;
+	private final AccountService accountService;
 	private final CommentHeartService commentHeartService;
 
 	@GetMapping("/{commentId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public CommentResponseDto readComment(@PathVariable final Long commentId) {
-
+	public CommentResponseDto readComment(@PathVariable final Long commentId, @RequestParam final Long accountId) {
 		Comment comment = commentService.findById(commentId);
-		return CommentResponseDto.of(comment);
+		Account account = accountService.findById(accountId);
+		Integer heartCount = commentHeartService.countCommentHeart(comment);
+		boolean isHeart = commentHeartService.isExistsByWriterAndComment(account, comment);
+
+		CommentResponseDto responseDto = CommentResponseDto.of(comment);
+		responseDto.uploadHeart(heartCount, isHeart);
+		return responseDto;
 	}
 
 	@PutMapping("/{commentId}")
@@ -38,7 +46,13 @@ public class CommentController {
 	public CommentResponseDto updateComment(@PathVariable final Long commentId, @RequestBody @Valid final CommentRequestDto requestDto) {
 		commentService.update(requestDto, commentId);
 		Comment comment = commentService.findById(commentId);
-		return CommentResponseDto.of(comment);
+		Account account = accountService.findById(requestDto.getAccountId());
+		Integer heartCount = commentHeartService.countCommentHeart(comment);
+		boolean isHeart = commentHeartService.isExistsByWriterAndComment(account, comment);
+
+		CommentResponseDto responseDto = CommentResponseDto.of(comment);
+		responseDto.uploadHeart(heartCount, isHeart);
+		return responseDto;
 	}
 
 	@DeleteMapping("/{commentId}")
