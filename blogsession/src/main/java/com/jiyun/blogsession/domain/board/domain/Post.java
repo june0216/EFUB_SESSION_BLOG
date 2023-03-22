@@ -32,8 +32,12 @@ public class Post extends BaseTimeEntity {
 	@JoinColumn(name = "account_id", updatable = false)
 	private Account writer;
 
-	@OneToMany(mappedBy = "post") //연관관계 주인인 Member가 외래키를 가지고 있음 (다대일 양방향 -> 연관관계 주인이 외래키 가짐)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true) //연관관계 주인인 Member가 외래키를 가지고 있음 (다대일 양방향 -> 연관관계 주인이 외래키 가짐)
 	private List<Comment> commentList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PostHeart> postLikeList = new ArrayList<>();
+
 
 
 
