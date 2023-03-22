@@ -15,25 +15,27 @@ EFUB 백엔드 세션에 필요한 블로그 코드 입니다.
 
 # 🍏1주차
 
-# account 브랜치 
+account 브랜치 
 
 # 🍏2주차
 
-# post - Comment 없는 버전
+post - Comment 없는 버전
 
 
 # 🍏3주차
 
-# post 브랜치 - Comment 추가 버전
+post 브랜치 - Comment 추가 버전
 
-# comment 브랜치
+comment 브랜치
 
-# heart 브랜치 
+heart 브랜치 
 
 
 # 🍏4주차
-# follow 브랜치
+
+follow 브랜치
 
 # 🍏 최종 
+
 main 브랜치
 
