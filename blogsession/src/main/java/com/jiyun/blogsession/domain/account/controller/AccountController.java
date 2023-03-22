@@ -38,7 +38,7 @@ public class AccountController {
 	}
 
 
-	@PatchMapping("/profile")
+	@PatchMapping("/profile/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public AccountResponseDto update(@PathVariable final Long accountId, @RequestBody @Valid final AccountUpdateRequestDto requestDto) {
 		Long id = accountService.update(accountId,requestDto);
@@ -46,7 +46,7 @@ public class AccountController {
 		return new AccountResponseDto(findAccount);
 	}
 
-	@PatchMapping("/{accountId}/withdraw")
+	@PatchMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public String withdraw(@PathVariable long accountId)
 	{
@@ -55,7 +55,7 @@ public class AccountController {
 
 	}
 
-	@DeleteMapping("/{accountId}/withdraw")
+	@DeleteMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public String delete(@PathVariable long accountId)
 	{
