@@ -12,22 +12,30 @@ EFUB 백엔드 세션에 필요한 블로그 코드 입니다.
 
 </aside>
 
+
 # 🍏1주차
 
-# Accounts
-
-[Accounts](https://www.notion.so/458d7a3b49484de5a309d26b4315e1d4)
+account 브랜치 
 
 # 🍏2주차
 
-# Posts
+post - Comment 없는 버전
 
-[Posts](https://www.notion.so/477590c533b74496a936f15529266b27)
 
 # 🍏3주차
 
-[Posts (수정버전)](https://www.notion.so/393a14bed8294981962cc78cfa18e24d)
+post 브랜치 - Comment 추가 버전
 
-# Comments
+comment 브랜치
 
-[Comments](https://www.notion.so/04e649fe47354aaa969fdd6fb15bce22)
+heart 브랜치 
+
+
+# 🍏4주차
+
+follow 브랜치
+
+# 🍏 최종 
+
+main 브랜치
+
