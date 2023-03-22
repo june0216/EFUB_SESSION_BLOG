@@ -13,6 +13,8 @@ public class PostResponseDto {
 	private String writerName;
 	private String title;
 	private String content;
+	private Integer heartCount;
+	private Boolean isHeart;
 	private LocalDateTime createdDate;
 	private LocalDateTime modifiedDate;
 //TODO: 좋아요, 댓글 추가
@@ -26,6 +28,11 @@ public class PostResponseDto {
 				.createdDate(board.getCreatedDate())
 				.modifiedDate(board.getModifiedDate())
 				.build();
+	}
+	public void uploadHeart(Integer heartCount, boolean isHeart) {
+		this.heartCount = heartCount;
+		this.isHeart = isHeart;
+
 	}
 
 }

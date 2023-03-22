@@ -27,8 +27,8 @@ public class PostHeartService {
 	private final AccountService accountService;
 
 	public void create(Long postId, Long accountId) {
-		Account account = accountService.findById(accountId);
 		Post post = postService.findById(postId);
+		Account account = accountService.findById(accountId);
 		if (isExistsByWriterAndPost(account, post)) {
 			throw new RuntimeException("이미 좋아요를 눌렀습니다.");
 		}
