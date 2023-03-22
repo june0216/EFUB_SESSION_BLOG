@@ -52,7 +52,7 @@ public class PostController {
 		boolean isHeart = postHeartService.isExistsByWriterAndPost(account, post);
 		PostResponseDto responseDto = PostResponseDto.of(post);
 		responseDto.uploadHeart(heartCount, isHeart);
-		return PostResponseDto.of(post);
+		return responseDto;
 	}
 
 	@PutMapping("/{postId}")
@@ -65,7 +65,7 @@ public class PostController {
 		boolean isHeart = postHeartService.isExistsByWriterAndPost(account, post);
 		PostResponseDto responseDto = PostResponseDto.of(post);
 		responseDto.uploadHeart(heartCount, isHeart);
-		return PostResponseDto.of(post);
+		return responseDto;
 	}
 
 	@DeleteMapping("/{postId}")
