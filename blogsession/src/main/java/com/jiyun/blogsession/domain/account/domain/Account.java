@@ -7,12 +7,12 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
+import static com.jiyun.blogsession.domain.account.domain.AccountStatus.REGISTERED;
 import static com.jiyun.blogsession.domain.account.domain.AccountStatus.UNREGISTERED;
 
 
 @Entity//해당 클래스에 있는 내부변수에 모두 @Column을 내부적으로 포함 -> 옵셥없으면 생략 가능
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자의 접근 제어를 PROTECTED로 설정해놓게 되면 무분별한 객체 생성에 대해 한번 더 체크할 수 있는 수단
-@DynamicInsert//status 기본값 유지를 위해
 @Getter
 public class Account extends BaseTimeEntity {
 	@Id
@@ -33,7 +33,6 @@ public class Account extends BaseTimeEntity {
 	private String bio;//length 따로 지정하지 않으면 기본적으로 255이다.
 
 	@Enumerated(EnumType.STRING)
-	@ColumnDefault("'REGISTERED'")
 	private AccountStatus status;
 
 	@Builder
@@ -43,6 +42,7 @@ public class Account extends BaseTimeEntity {
 		this.encodedPassword = password;
 		this.nickname = nickname;
 		this.bio = bio;
+		this.status = REGISTERED;
 	}
 
 	public void updateAccount(String bio, String nickname){
