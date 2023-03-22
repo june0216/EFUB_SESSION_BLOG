@@ -21,7 +21,7 @@ public class AccountService {
 
 	public Long signUp(SignUpRequestDto requestDto){
 		if (isExistedEmail(requestDto.getEmail())){
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("이미 존재하는 email입니다. " + requestDto.getEmail());
 		}
 		Account account = accountRepository.save(requestDto.toEntity());
 		return account.getAccountId();

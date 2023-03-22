@@ -3,7 +3,7 @@ package com.jiyun.blogsession.domain.board.service;
 import com.jiyun.blogsession.domain.account.domain.Account;
 import com.jiyun.blogsession.domain.account.service.AccountService;
 import com.jiyun.blogsession.domain.board.domain.Post;
-import com.jiyun.blogsession.domain.board.dto.PostRequestDto;
+import com.jiyun.blogsession.domain.board.dto.request.PostRequestDto;
 import com.jiyun.blogsession.domain.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

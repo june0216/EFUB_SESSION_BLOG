@@ -1,4 +1,4 @@
-package com.jiyun.blogsession.domain.board.dto;
+package com.jiyun.blogsession.domain.board.dto.response;
 
 import com.jiyun.blogsession.domain.board.domain.Post;
 import lombok.AccessLevel;
