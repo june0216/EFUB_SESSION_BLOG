@@ -46,9 +46,9 @@ public class PostService {
 		board.updatePost(requestDto.getTitle(), requestDto.getContent());
 	}
 
-	public void delete(Long boardId) {
-		Post board = findById(boardId);
-		postRepository.delete(board);
+	public void delete(Long postId) {
+		Post post = findById(postId);
+		postRepository.delete(post);
 	}
 
 	@Transactional(readOnly = true)
