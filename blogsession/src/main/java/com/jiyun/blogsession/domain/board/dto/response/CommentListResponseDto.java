@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentListResponseDto {//1) 해당 게시글에 있는 댓글 목록 조회, 2) 해당 작성자가 작성한 댓글 목록 조회
 
 	//게시글에 해당하는 댓글 목록 반환 dto
