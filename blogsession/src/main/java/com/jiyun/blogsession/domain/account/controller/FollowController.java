@@ -55,11 +55,11 @@ public class FollowController {
 	//언팔로우
 	@DeleteMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public FollowStatusResponseDto deleteFollow(@PathVariable Long accountId, @RequestBody final FollowRequestDto requestDto)//상태를 넘겨주기
+	public FollowStatusResponseDto deleteFollow(@PathVariable Long accountId,  @RequestParam Long followingId)//상태를 넘겨주기
 	{
-		followService.delete(accountId, requestDto);
-		Account findAccount = accountService.findById(requestDto.getFollowingId());
-		Boolean isFollow = followService.isFollowing(accountId, requestDto.getFollowingId());
+		followService.delete(accountId, followingId);
+		Account findAccount = accountService.findById(followingId);
+		Boolean isFollow = followService.isFollowing(accountId, followingId);
 		return new FollowStatusResponseDto(findAccount, isFollow);
 	}
 }

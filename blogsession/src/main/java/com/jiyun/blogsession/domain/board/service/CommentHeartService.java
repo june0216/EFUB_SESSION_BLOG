@@ -41,16 +41,25 @@ public class CommentHeartService {
 		commentHeartRepository.save(commentHeart);
 	}
 
-	public void delete(Long commentId, AccountInfoRequestDto requestDto) {
-		Comment comment = commentService.findById(commentId);
-		Account account = accountService.findById(requestDto.getAccountId());
-		CommentHeart commentLike = commentHeartRepository.findByWriterAndComment(account, comment)
-				.orElseThrow(() -> new RuntimeException("좋아요가 존재하지 않습니다."));
-		commentHeartRepository.delete(commentLike);
+	public void delete(Long commentHeartId, Long accountId) {
+		CommentHeart commentHeart = findById(commentHeartId);
+		checkValidMember(accountId, commentHeart.getWriter().getAccountId());
+		commentHeartRepository.delete(commentHeart);
+	}
+
+	private void checkValidMember(Long currentAccountId, Long tagetAccountId){
+		if(currentAccountId != tagetAccountId){
+			throw new IllegalArgumentException();
+		}
 	}
 	public boolean isHeart(Long accountId, Comment comment){
 		Account account = accountService.findById(accountId);
 		return isExistsByWriterAndComment(account, comment);
+	}
+	@Transactional(readOnly = true)
+	public CommentHeart findById(Long commentHeartId) {
+		return commentHeartRepository.findById(commentHeartId)
+				.orElseThrow(() -> new IllegalArgumentException("해당 좋아요가 없습니다. id=" + commentHeartId));
 	}
 
 	@Transactional(readOnly = true)

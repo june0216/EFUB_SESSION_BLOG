@@ -48,9 +48,9 @@ public class PostService {
 		post.updatePost(requestDto.getTitle(), requestDto.getContent());
 	}
 
-	public void delete(Long postId, AccountInfoRequestDto requestDto) {
+	public void delete(Long postId, Long accountId) {
 		Post post = findById(postId);
-		checkValidMember(requestDto.getAccountId(), post.getWriter().getAccountId());
+		checkValidMember(accountId, post.getWriter().getAccountId());
 		postRepository.delete(post);
 	}
 

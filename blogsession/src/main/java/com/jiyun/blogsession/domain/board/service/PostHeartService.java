@@ -28,6 +28,7 @@ public class PostHeartService {
 	private final PostService postService;
 	private final AccountService accountService;
 
+
 	public void create(Long postId, AccountInfoRequestDto requestDto) {
 		Post post = postService.findById(postId);
 		Account account = accountService.findById(requestDto.getAccountId());
@@ -41,12 +42,15 @@ public class PostHeartService {
 		postHeartRepository.save(postHeart);
 	}
 
-	public void delete(Long postId, AccountInfoRequestDto requestDto) {
-		Post post = postService.findById(postId);
-		Account account = accountService.findById(requestDto.getAccountId());
-		PostHeart postLike = postHeartRepository.findByWriterAndPost(account, post)
-				.orElseThrow(() -> new RuntimeException("좋아요가 존재하지 않습니다."));
-		postHeartRepository.delete(postLike);
+	public void delete(Long postHeartId, Long accountId) {
+		PostHeart postHeart = findById(postHeartId);
+		checkValidMember(accountId, postHeart.getWriter().getAccountId());
+		postHeartRepository.delete(postHeart);
+	}
+	private void checkValidMember(Long currentAccountId, Long tagetAccountId){
+		if(currentAccountId != tagetAccountId){
+			throw new IllegalArgumentException();
+		}
 	}
 
 	public boolean isHeart(Long accountId, Post post){
@@ -72,6 +76,11 @@ public class PostHeartService {
 		return postHeartRepository.findByWriter(account);
 	}
 
+	@Transactional(readOnly = true)
+	public PostHeart findById(Long postHeartId) {
+		return postHeartRepository.findById(postHeartId)
+				.orElseThrow(() -> new IllegalArgumentException("해당 좋아요가 없습니다. id=" + postHeartId));
+	}
 	@Transactional(readOnly = true)
 	public List<Post> findLikePostList(List<PostHeart> postLikeList) {
 		return postLikeList.stream()

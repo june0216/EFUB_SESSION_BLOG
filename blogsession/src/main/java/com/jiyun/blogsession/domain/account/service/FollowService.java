@@ -33,8 +33,8 @@ public class FollowService {
 		return follow.getFollowId();
 	}
 
-	public void delete(Long accountId,FollowRequestDto followRequestDto) {
-		Follow findFollow = findByFollowerIdAndFollowingId(accountId, followRequestDto.getFollowingId());
+	public void delete(Long accountId, Long followingId) {
+		Follow findFollow = findByFollowerIdAndFollowingId(accountId, followingId);
 		followRepository.deleteByFollowId(findFollow.getFollowId());
 	}
 

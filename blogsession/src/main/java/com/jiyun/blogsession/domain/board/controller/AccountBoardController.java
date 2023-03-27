@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,7 +27,6 @@ public class AccountBoardController {
 	private final PostService postService;
 	private final CommentService commentService;
 	private final AccountService accountService;
-	private final PostHeartService postHeartService;
 
 	@GetMapping("/posts")//작성자 별 글 조회
 	@ResponseStatus(value = HttpStatus.OK)
@@ -34,7 +34,6 @@ public class AccountBoardController {
 		List<Post> postList = postService.findByWriter(accountId);
 		return PostListResponseDto.of(postList);
 	}
-
 	@GetMapping("/comments")//작성자 별 댓글 조회
 	@ResponseStatus(value = HttpStatus.OK)
 	public CommentListResponseDto.Account readCommentsList(@PathVariable final Long accountId) {

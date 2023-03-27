@@ -41,8 +41,8 @@ public class CommentController {
 
 	@DeleteMapping("/{commentId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String deleteComment(@PathVariable final Long commentId, @RequestBody @Valid AccountInfoRequestDto requestDto) {
-		commentService.delete(commentId, requestDto);
+	public String deleteComment(@PathVariable final Long commentId, @RequestParam Long accountId) {
+		commentService.delete(commentId, accountId);
 		return "성공적으로 삭제되었습니다.";
 	}
 
@@ -53,10 +53,10 @@ public class CommentController {
 		return "좋아요를 눌렀습니다.";
 	}
 
-	@DeleteMapping("/{commentId}/hearts")
+	@DeleteMapping("/hearts/{commentHeartId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String deleteCommentLike(@PathVariable final Long commentId, @RequestBody final AccountInfoRequestDto requestDto) {
-		commentHeartService.delete(commentId, requestDto);
+	public String deleteCommentLike(@PathVariable final Long commentHeartId, @RequestParam Long accountId) {
+		commentHeartService.delete(commentHeartId, accountId);
 		return "좋아요가 취소되었습니다.";
 	}
 
