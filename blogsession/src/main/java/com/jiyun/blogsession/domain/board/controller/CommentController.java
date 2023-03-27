@@ -41,7 +41,7 @@ public class CommentController {
 
 	@DeleteMapping("/{commentId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String deleteComment(@PathVariable final Long commentId, @RequestParam Long accountId) {
+	public String deleteComment(@PathVariable final Long commentId, @RequestParam final Long accountId) {
 		commentService.delete(commentId, accountId);
 		return "성공적으로 삭제되었습니다.";
 	}
@@ -55,7 +55,7 @@ public class CommentController {
 
 	@DeleteMapping("/hearts/{commentHeartId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String deleteCommentLike(@PathVariable final Long commentHeartId, @RequestParam Long accountId) {
+	public String deleteCommentLike(@PathVariable final Long commentHeartId, @RequestParam final Long accountId) {
 		commentHeartService.delete(commentHeartId, accountId);
 		return "좋아요가 취소되었습니다.";
 	}
