@@ -3,6 +3,7 @@ package com.jiyun.blogsession.domain.board.service;
 import com.jiyun.blogsession.domain.account.domain.Account;
 import com.jiyun.blogsession.domain.account.service.AccountService;
 import com.jiyun.blogsession.domain.board.domain.Post;
+import com.jiyun.blogsession.domain.board.dto.request.AccountInfoRequestDto;
 import com.jiyun.blogsession.domain.board.dto.request.PostRequestDto;
 import com.jiyun.blogsession.domain.board.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,13 +43,21 @@ public class PostService {
 
 
 	public void update(Long postId, PostRequestDto requestDto) {
-		Post board = findById(postId);
-		board.updatePost(requestDto.getTitle(), requestDto.getContent());
+		Post post = findById(postId);
+		checkValidMember(requestDto.getAccountId(), post.getWriter().getAccountId());
+		post.updatePost(requestDto.getTitle(), requestDto.getContent());
 	}
 
-	public void delete(Long postId) {
+	public void delete(Long postId, AccountInfoRequestDto requestDto) {
 		Post post = findById(postId);
+		checkValidMember(requestDto.getAccountId(), post.getWriter().getAccountId());
 		postRepository.delete(post);
+	}
+
+	private void checkValidMember(Long currentAccountId, Long tagetAccountId){
+		if(currentAccountId != tagetAccountId){
+			throw new IllegalArgumentException();
+		}
 	}
 
 	@Transactional(readOnly = true)

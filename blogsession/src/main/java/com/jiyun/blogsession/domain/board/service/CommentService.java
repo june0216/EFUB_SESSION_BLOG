@@ -4,6 +4,7 @@ import com.jiyun.blogsession.domain.account.domain.Account;
 import com.jiyun.blogsession.domain.account.service.AccountService;
 import com.jiyun.blogsession.domain.board.domain.Comment;
 import com.jiyun.blogsession.domain.board.domain.Post;
+import com.jiyun.blogsession.domain.board.dto.request.AccountInfoRequestDto;
 import com.jiyun.blogsession.domain.board.dto.request.CommentRequestDto;
 import com.jiyun.blogsession.domain.board.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +34,20 @@ public class CommentService {
 
 	public void update(CommentRequestDto requestDto, Long commentId) {
 		Comment comment = findById(commentId);
+		checkValidMember(requestDto.getAccountId(), comment.getWriter().getAccountId());
 		comment.updateComment(requestDto.getContent());
 	}
 
-	public void delete(Long commentId) {
+	public void delete(Long commentId, AccountInfoRequestDto requestDto) {
 		Comment comment = findById(commentId);
+		checkValidMember(requestDto.getAccountId(), comment.getWriter().getAccountId());
 		commentRepository.delete(comment);
+	}
+
+	private void checkValidMember(Long currentAccountId, Long tagetAccountId){
+		if(currentAccountId != tagetAccountId){
+			throw new IllegalArgumentException();
+		}
 	}
 
 	// 연관관계 편의 메소드를 사용한 코드

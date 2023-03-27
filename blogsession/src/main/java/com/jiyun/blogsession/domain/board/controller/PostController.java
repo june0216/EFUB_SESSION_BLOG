@@ -4,7 +4,7 @@ package com.jiyun.blogsession.domain.board.controller;
 import com.jiyun.blogsession.domain.account.domain.Account;
 import com.jiyun.blogsession.domain.account.service.AccountService;
 import com.jiyun.blogsession.domain.board.domain.Post;
-import com.jiyun.blogsession.domain.board.dto.request.HeartRequestDto;
+import com.jiyun.blogsession.domain.board.dto.request.AccountInfoRequestDto;
 import com.jiyun.blogsession.domain.board.dto.response.PostListResponseDto;
 import com.jiyun.blogsession.domain.board.dto.request.PostRequestDto;
 import com.jiyun.blogsession.domain.board.dto.response.PostResponseDto;
@@ -12,7 +12,6 @@ import com.jiyun.blogsession.domain.board.service.PostHeartService;
 import com.jiyun.blogsession.domain.board.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.Parameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,18 +41,17 @@ public class PostController {
 		List<Post> postList = postService.findAllDesc();
 		return PostListResponseDto.of(postList);
 	}
-
 	@GetMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)// 글 1개 조회
-	public PostResponseDto readBoard(@PathVariable Long postId, @RequestParam final Long accountId) {
+	public PostResponseDto readPost(@PathVariable Long postId, @RequestParam final Long accountId) {
 		Post post = postService.findById(postId);
-		Account account = accountService.findById(accountId);
 		Integer heartCount = postHeartService.countPostHeart(post);
-		boolean isHeart = postHeartService.isExistsByWriterAndPost(account, post);
+		boolean isHeart = postHeartService.isHeart(accountId, post);
 		PostResponseDto responseDto = PostResponseDto.of(post);
 		responseDto.uploadHeart(heartCount, isHeart);
 		return responseDto;
 	}
+
 
 	@PutMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -70,22 +68,22 @@ public class PostController {
 
 	@DeleteMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String delete(@PathVariable final Long postId) {
-		postService.delete(postId);
+	public String delete(@PathVariable final Long postId, @RequestBody final AccountInfoRequestDto requestDto) {
+		postService.delete(postId, requestDto);
 		return "성공적으로 삭제되었습니다.";
 	}
 
 	@PostMapping("/{postId}/hearts")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public String createPostLike(@PathVariable final Long postId, @RequestBody final HeartRequestDto requestDto) {
-		postHeartService.create(postId, requestDto.getAccountId());
+	public String createPostLike(@PathVariable final Long postId, @RequestBody final AccountInfoRequestDto requestDto) {
+		postHeartService.create(postId, requestDto);
 		return "좋아요를 눌렀습니다.";
 	}
 
 	@DeleteMapping("/{postId}/hearts")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String deletePostLike(@PathVariable final Long postId, @RequestParam final Long accountId) {
-		postHeartService.delete(postId, accountId);
+	public String deletePostLike(@PathVariable final Long postId, @RequestBody final AccountInfoRequestDto requestDto) {
+		postHeartService.delete(postId, requestDto);
 		return "좋아요가 취소되었습니다.";
 	}
 

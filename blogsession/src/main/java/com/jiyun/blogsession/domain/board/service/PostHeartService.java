@@ -2,8 +2,10 @@ package com.jiyun.blogsession.domain.board.service;
 
 import com.jiyun.blogsession.domain.account.domain.Account;
 import com.jiyun.blogsession.domain.account.service.AccountService;
+import com.jiyun.blogsession.domain.board.domain.Comment;
 import com.jiyun.blogsession.domain.board.domain.Post;
 import com.jiyun.blogsession.domain.board.domain.PostHeart;
+import com.jiyun.blogsession.domain.board.dto.request.AccountInfoRequestDto;
 import com.jiyun.blogsession.domain.board.repository.PostHeartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +28,9 @@ public class PostHeartService {
 	private final PostService postService;
 	private final AccountService accountService;
 
-	public void create(Long postId, Long accountId) {
+	public void create(Long postId, AccountInfoRequestDto requestDto) {
 		Post post = postService.findById(postId);
-		Account account = accountService.findById(accountId);
+		Account account = accountService.findById(requestDto.getAccountId());
 		if (isExistsByWriterAndPost(account, post)) {
 			throw new RuntimeException("이미 좋아요를 눌렀습니다.");
 		}
@@ -39,12 +41,17 @@ public class PostHeartService {
 		postHeartRepository.save(postHeart);
 	}
 
-	public void delete(Long postId, Long accountId) {
+	public void delete(Long postId, AccountInfoRequestDto requestDto) {
 		Post post = postService.findById(postId);
-		Account account = accountService.findById(accountId);
+		Account account = accountService.findById(requestDto.getAccountId());
 		PostHeart postLike = postHeartRepository.findByWriterAndPost(account, post)
 				.orElseThrow(() -> new RuntimeException("좋아요가 존재하지 않습니다."));
 		postHeartRepository.delete(postLike);
+	}
+
+	public boolean isHeart(Long accountId, Post post){
+		Account account = accountService.findById(accountId);
+		return isExistsByWriterAndPost(account, post);
 	}
 
 	@Transactional(readOnly = true)

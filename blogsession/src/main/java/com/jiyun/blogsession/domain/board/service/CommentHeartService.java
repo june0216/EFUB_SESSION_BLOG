@@ -6,6 +6,7 @@ import com.jiyun.blogsession.domain.board.domain.Comment;
 import com.jiyun.blogsession.domain.board.domain.CommentHeart;
 import com.jiyun.blogsession.domain.board.domain.Post;
 import com.jiyun.blogsession.domain.board.domain.PostHeart;
+import com.jiyun.blogsession.domain.board.dto.request.AccountInfoRequestDto;
 import com.jiyun.blogsession.domain.board.repository.CommentHeartRepository;
 import com.jiyun.blogsession.domain.board.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +28,8 @@ public class CommentHeartService {
 
 	private final AccountService accountService;
 
-	public void create(Long commentId, Long accountId) {
-		Account account = accountService.findById(accountId);
+	public void create(Long commentId, AccountInfoRequestDto requestDto) {
+		Account account = accountService.findById(requestDto.getAccountId());
 		Comment comment = commentService.findById(commentId);
 		if (isExistsByWriterAndComment(account, comment)) {
 			throw new RuntimeException("이미 좋아요를 눌렀습니다.");
@@ -40,12 +41,16 @@ public class CommentHeartService {
 		commentHeartRepository.save(commentHeart);
 	}
 
-	public void delete(Long commentId, Long accountId) {
+	public void delete(Long commentId, AccountInfoRequestDto requestDto) {
 		Comment comment = commentService.findById(commentId);
-		Account account = accountService.findById(accountId);
+		Account account = accountService.findById(requestDto.getAccountId());
 		CommentHeart commentLike = commentHeartRepository.findByWriterAndComment(account, comment)
 				.orElseThrow(() -> new RuntimeException("좋아요가 존재하지 않습니다."));
 		commentHeartRepository.delete(commentLike);
+	}
+	public boolean isHeart(Long accountId, Comment comment){
+		Account account = accountService.findById(accountId);
+		return isExistsByWriterAndComment(account, comment);
 	}
 
 	@Transactional(readOnly = true)
