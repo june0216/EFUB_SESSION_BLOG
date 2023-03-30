@@ -15,7 +15,6 @@ public class AccountResponseDto {
 	private String nickname;
 	private String bio;
 
-	@Builder
 	public AccountResponseDto(Account account) {
 		this.accountId = account.getAccountId();
 		this.email = account.getEmail();

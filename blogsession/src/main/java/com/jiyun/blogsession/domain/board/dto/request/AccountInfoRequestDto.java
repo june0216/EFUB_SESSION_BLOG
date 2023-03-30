@@ -13,7 +13,7 @@ public class AccountInfoRequestDto { // 로그인 기능이 없어 회원 정보
 	@NotNull(message = "작성자는 필수로 입력되어야 합니다.")
 	private Long accountId;
 
-	@Builder
+
 	public AccountInfoRequestDto(Long accountId) {
 		this.accountId = accountId;
 	}

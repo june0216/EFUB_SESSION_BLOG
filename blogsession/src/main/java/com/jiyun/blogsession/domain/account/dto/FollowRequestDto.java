@@ -16,7 +16,6 @@ public class FollowRequestDto {
 
 	private Long followingId;
 
-	@Builder
 	public FollowRequestDto(Long followingId) {
 		this.followingId = followingId;
 	}
