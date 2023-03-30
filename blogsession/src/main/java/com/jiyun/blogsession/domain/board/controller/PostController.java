@@ -80,10 +80,10 @@ public class PostController {
 		return "좋아요를 눌렀습니다.";
 	}
 
-	@DeleteMapping("/hearts/{postHeartId}")
+	@DeleteMapping("{postId}/hearts")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String deletePostLike(@PathVariable Long postHeartId ,@RequestParam final Long accountId) {
-		postHeartService.delete(postHeartId, accountId);
+	public String deletePostLike(@PathVariable Long postId ,@RequestParam final Long accountId) {
+		postHeartService.delete(postId, accountId);
 		return "좋아요가 취소되었습니다.";
 	}
 

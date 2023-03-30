@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentHeartRepository extends JpaRepository<CommentHeart, Long> {
+
 	Integer countByComment(Comment comment);
 	List<CommentHeart> findByWriter(Account account);
 	boolean existsByWriterAndComment(Account account, Comment comment);
