@@ -29,7 +29,7 @@ public class AccountController {
 	}
 	@GetMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public AccountResponseDto getAccount(@PathVariable Long accountId)
+	public AccountResponseDto getAccount(@PathVariable final Long accountId)
 	{
 		Account findAccount = accountService.findById(accountId);
 		return new AccountResponseDto(findAccount);
@@ -46,7 +46,7 @@ public class AccountController {
 
 	@PatchMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String withdraw(@PathVariable long accountId)
+	public String withdraw(@PathVariable final Long accountId)
 	{
 		accountService.withdraw(accountId);
 		return "성공적으로 탈퇴가 완료되었습니다";
@@ -55,7 +55,7 @@ public class AccountController {
 
 	@DeleteMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String delete(@PathVariable long accountId)
+	public String delete(@PathVariable final Long accountId)
 	{
 		accountService.delete(accountId);
 		return "성공적으로 탈퇴가 완료되었습니다";

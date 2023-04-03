@@ -27,7 +27,7 @@ public class FollowController {
 
 	@GetMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)//팔로우, 팔로워 리스트
-	public FollowListResponseDto getFollowList(@PathVariable Long accountId)
+	public FollowListResponseDto getFollowList(@PathVariable final Long accountId)
 	{
 		List<Follow> followerList = followService.findAllByFollowerId(accountId);
 		List<Follow> followingList = followService.findAllByFollowingId(accountId);
@@ -36,7 +36,7 @@ public class FollowController {
 
 	@GetMapping("/{accountId}/search")
 	@ResponseStatus(value = HttpStatus.OK)//이메일 유저 검색
-	public FollowStatusResponseDto searchAccount(@PathVariable Long accountId, @RequestParam String email){
+	public FollowStatusResponseDto searchAccount(@PathVariable final Long accountId, @RequestParam final String email){
 		Account searchAccount = accountService.findByEmail(email);
 		Boolean isFollow = followService.isFollowing(accountId, searchAccount.getAccountId());
 		return new FollowStatusResponseDto(searchAccount, isFollow);
@@ -45,7 +45,7 @@ public class FollowController {
 
 	@PostMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.CREATED)//팔로우 - 상태 하기 
-	public FollowStatusResponseDto addFollow(@PathVariable Long accountId, @RequestBody final FollowRequestDto requestDto) {
+	public FollowStatusResponseDto addFollow(@PathVariable final Long accountId, @RequestBody final FollowRequestDto requestDto) {
 		Long id = followService.add(accountId, requestDto);
 		Boolean isFollow = followService.isFollowing(accountId, requestDto.getFollowingId());
 		Account findAccount = accountService.findById(requestDto.getFollowingId());
@@ -55,7 +55,7 @@ public class FollowController {
 	//언팔로우
 	@DeleteMapping("/{accountId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public FollowStatusResponseDto deleteFollow(@PathVariable Long accountId,  @RequestParam Long followingId)//상태를 넘겨주기
+	public FollowStatusResponseDto deleteFollow(@PathVariable final Long accountId,  @RequestParam final Long followingId)//상태를 넘겨주기
 	{
 		followService.delete(accountId, followingId);
 		Account findAccount = accountService.findById(followingId);
