@@ -36,8 +36,7 @@ public class Account extends BaseTimeEntity {
 	private AccountStatus status;
 
 	@Builder
-	public Account(Long accountId, String email, String password, String nickname, String bio) {
-		this.accountId = accountId;
+	public Account(String email, String password, String nickname, String bio) {
 		this.email = email;
 		this.encodedPassword = password;
 		this.nickname = nickname;
