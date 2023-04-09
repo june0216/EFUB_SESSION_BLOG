@@ -2,6 +2,7 @@ package com.jiyun.blogsession.domain.account.service;
 
 import com.jiyun.blogsession.domain.account.domain.Account;
 import com.jiyun.blogsession.domain.account.dto.AccountUpdateRequestDto;
+import com.jiyun.blogsession.domain.account.dto.LoginRequestDto;
 import com.jiyun.blogsession.domain.account.dto.SignUpRequestDto;
 import com.jiyun.blogsession.domain.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.security.auth.login.AccountNotFoundException;
 
 @Slf4j
 @Service//서비스 레이어, 내부에서 자바 로직을 처리함
@@ -44,10 +46,17 @@ public class AccountService {
 		accountRepository.delete(account);
 	}
 
-	@Transactional
 	public void withdraw(Long accountId) {
 		Account account = findById(accountId);
 		account.withdrawAccount();
+	}
+
+	public Long login(LoginRequestDto requestDto){
+		Account account = findByEmail(requestDto.getEmail());
+		if(!account.getEncodedPassword().equals(requestDto.getPassword())){
+			throw new IllegalArgumentException();
+		}
+		return account.getAccountId();
 	}
 
 	@Transactional(readOnly = true)

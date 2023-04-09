@@ -1,9 +1,7 @@
 package com.jiyun.blogsession.domain.account.controller;
 
 import com.jiyun.blogsession.domain.account.domain.Account;
-import com.jiyun.blogsession.domain.account.dto.AccountResponseDto;
-import com.jiyun.blogsession.domain.account.dto.AccountUpdateRequestDto;
-import com.jiyun.blogsession.domain.account.dto.SignUpRequestDto;
+import com.jiyun.blogsession.domain.account.dto.*;
 import com.jiyun.blogsession.domain.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +31,14 @@ public class AccountController {
 	{
 		Account findAccount = accountService.findById(accountId);
 		return new AccountResponseDto(findAccount);
+	}
+
+	@PostMapping("/login")
+	@ResponseStatus(value = HttpStatus.OK)
+	public LoginResponseDto login(@RequestBody final LoginRequestDto requestDto)
+	{
+		Long accountId = accountService.login(requestDto);
+		return new LoginResponseDto(accountId);
 	}
 
 
