@@ -40,7 +40,7 @@ public class Comment extends BaseTimeEntity {
 
 
 	// 연관관계 편의 메소드
-	protected void setPost(Post post) {
+	public void setPost(Post post) {
 		if(this.post != null)
 		{
 			this.post.getCommentList().remove(this);
@@ -62,6 +62,6 @@ public class Comment extends BaseTimeEntity {
 	}
 
 
-	// 연관관계 편의 메소드
+
 
 }

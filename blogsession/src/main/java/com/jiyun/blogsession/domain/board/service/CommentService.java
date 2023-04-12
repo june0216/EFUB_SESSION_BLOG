@@ -28,7 +28,8 @@ public class CommentService {
 	public Long create(CommentRequestDto requestDto, Long postId) {
 		Account account = accountService.findById(requestDto.getAccountId());
 		Post post = postService.findById(postId);
-		Comment comment = commentRepository.save(requestDto.toEntity(post, account));
+		Comment comment = commentRepository.save(requestDto.toEntity(account));
+		comment.setPost(post);
 		return comment.getId();
 	}
 

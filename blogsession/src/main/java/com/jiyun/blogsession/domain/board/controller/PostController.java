@@ -19,17 +19,17 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@RestController
-@RequestMapping("/posts")
-@RequiredArgsConstructor
+@RestController//Rest 방식으로 개발을 한다.
+@RequestMapping("/posts")//핸들러에서 해당 경로로 매핑된다.
+@RequiredArgsConstructor//final이 붙거나 @NotNull 이 붙은 필드의 생성자를 자동 생성해주는 롬복 어노테이션
 public class PostController {
-	private final PostService postService;
+	private final PostService postService;//서비스에서 트랜잭션을 관리해주기 때문에 서비스에서만 엔티티를 만들어야 한다.
 	private final AccountService accountService;
 	private final PostHeartService postHeartService;
 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public PostResponseDto create(@RequestBody @Valid final PostRequestDto requestDto) {
+	public PostResponseDto createPost(@RequestBody @Valid final PostRequestDto requestDto) {
 		Long id = postService.create(requestDto);
 		Post post = postService.findById(id);
 		return PostResponseDto.of(post);
@@ -55,7 +55,7 @@ public class PostController {
 
 	@PutMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public PostResponseDto update(@PathVariable final Long postId, @RequestBody final PostRequestDto requestDto) {
+	public PostResponseDto updatePost(@PathVariable final Long postId, @RequestBody final PostRequestDto requestDto) {
 		postService.update(postId, requestDto);
 		Post post = postService.findById(postId);
 		Account account = accountService.findById(requestDto.getAccountId());
@@ -68,7 +68,7 @@ public class PostController {
 
 	@DeleteMapping("/{postId}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public String delete(@PathVariable final Long postId,  @RequestParam final Long accountId) {
+	public String deletePost(@PathVariable final Long postId,  @RequestParam final Long accountId) {
 		postService.delete(postId, accountId);
 		return "성공적으로 삭제되었습니다.";
 	}

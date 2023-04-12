@@ -27,12 +27,11 @@ public class CommentRequestDto {
 
 
 
-	public Comment toEntity(Post post, Account account)
+	public Comment toEntity(Account account)
 	{
 		return Comment.builder()
 				.content(this.content)
 				.writer(account)
-				.post(post)
 				.build();
 
 	}

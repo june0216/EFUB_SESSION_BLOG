@@ -19,18 +19,18 @@ public class Post extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "post_id")
+	@Column(name = "post_id")//MySQL에서 매핑을 한다.
 	private Long postId;
 
 	@Column(length = 500, nullable = false)
 	private String title;
 
-	@Column(columnDefinition = "TEXT")// @NotNull은 @Column(nullable=false)의 역할도 같이 하므로 생략
+	@Column(columnDefinition = "TEXT")// 어떤 컬럼인지 자세하게 적을 수 있다. Mysql 변수명이 Text라는 것이다. @NotNull은 @Column(nullable=false)의 역할도 같이 하므로 생략
 	private String content;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "account_id", updatable = false)
-	private Account writer;
+	@ManyToOne(fetch = FetchType.LAZY)//유저 한 명이 글을 많이 쓸 수 있다.
+	@JoinColumn(name = "account_id", updatable = false)//account_id가 외래키로 들어감
+	private Account writer;//엔티티를 조인을 해준다.
 
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true) //연관관계 주인인 Member가 외래키를 가지고 있음 (다대일 양방향 -> 연관관계 주인이 외래키 가짐)
 	private List<Comment> commentList = new ArrayList<>();
